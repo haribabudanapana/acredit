@@ -1,0 +1,27 @@
+{
+  "name": "acredit",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000a\u0000c\u0000r\u0000e\u0000d\u0000i\u0000t\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haribabudanapana/acredit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/haribabudanapana/acredit/issues"
+  },
+  "homepage": "https://github.com/haribabudanapana/acredit#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.1",
+    "tsconfig-paths": "^4.2.0"
+  }
+}
