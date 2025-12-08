@@ -1,0 +1,116 @@
+// Test data for: Verify 'Print Legal Forms for Submission' link visibility for submitted applications
+[
+  {
+    "testCaseId": "TCD_FT_01_FR-1",
+    "description": "Standard submitted application requiring legal forms. Link should be visible.",
+    "user": {
+      "role": "FacilityUser",
+      "username": "facility_user_01",
+      "password": "Test@1234"
+    },
+    "application": {
+      "id": "APP-10001",
+      "status": "Submitted",
+      "requiresLegalForms": true,
+      "submittedDate": "2024-06-01T10:00:00Z",
+      "facilityName": "Sunrise Medical Center",
+      "applicationType": "Initial",
+      "legalForms": [
+        "Ownership Disclosure",
+        "Attestation of Compliance"
+      ]
+    },
+    "expected": {
+      "printLegalFormsLinkVisible": true
+    }
+  },
+  {
+    "testCaseId": "TCD_FT_01_FR-1",
+    "description": "Submitted application NOT requiring legal forms. Link should NOT be visible (edge case).",
+    "user": {
+      "role": "FacilityUser",
+      "username": "facility_user_02",
+      "password": "Test@1234"
+    },
+    "application": {
+      "id": "APP-10002",
+      "status": "Submitted",
+      "requiresLegalForms": false,
+      "submittedDate": "2024-06-01T11:00:00Z",
+      "facilityName": "Green Valley Clinic",
+      "applicationType": "Renewal",
+      "legalForms": []
+    },
+    "expected": {
+      "printLegalFormsLinkVisible": false
+    }
+  },
+  {
+    "testCaseId": "TCD_FT_01_FR-1",
+    "description": "Application in 'In Progress' status, requires legal forms. Link should NOT be visible (boundary case).",
+    "user": {
+      "role": "FacilityUser",
+      "username": "facility_user_03",
+      "password": "Test@1234"
+    },
+    "application": {
+      "id": "APP-10003",
+      "status": "In Progress",
+      "requiresLegalForms": true,
+      "submittedDate": null,
+      "facilityName": "Riverbend Hospital",
+      "applicationType": "Initial",
+      "legalForms": [
+        "Ownership Disclosure"
+      ]
+    },
+    "expected": {
+      "printLegalFormsLinkVisible": false
+    }
+  },
+  {
+    "testCaseId": "TCD_FT_01_FR-1",
+    "description": "Submitted application, requires legal forms, but no legal forms configured (edge case).",
+    "user": {
+      "role": "FacilityUser",
+      "username": "facility_user_04",
+      "password": "Test@1234"
+    },
+    "application": {
+      "id": "APP-10004",
+      "status": "Submitted",
+      "requiresLegalForms": true,
+      "submittedDate": "2024-06-01T12:00:00Z",
+      "facilityName": "Lakeside Health",
+      "applicationType": "Renewal",
+      "legalForms": []
+    },
+    "expected": {
+      "printLegalFormsLinkVisible": false
+    }
+  },
+  {
+    "testCaseId": "TCD_FT_01_FR-1",
+    "description": "Submitted application, requires legal forms, user with special characters in username (boundary test).",
+    "user": {
+      "role": "FacilityUser",
+      "username": "facility_user_special_!@#",
+      "password": "Test@1234"
+    },
+    "application": {
+      "id": "APP-10005",
+      "status": "Submitted",
+      "requiresLegalForms": true,
+      "submittedDate": "2024-06-01T13:00:00Z",
+      "facilityName": "Metro Medical",
+      "applicationType": "Initial",
+      "legalForms": [
+        "Ownership Disclosure",
+        "Attestation of Compliance"
+      ]
+    },
+    "expected": {
+      "printLegalFormsLinkVisible": true
+    }
+  }
+]
