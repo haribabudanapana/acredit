@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "testCaseId": "TCD_FT_01_FR-1",
+    "testCaseName": "Verify 'Print Legal Forms for Submission' link visibility for submitted applications",
+    "priority": "High",
+    "type": "Functional",
+    "objective": "Ensure the 'Print Legal Forms for Submission' link is visible when the application is submitted and requires specific documents.",
+    "preconditions": [
+      "Facility User is logged into the ACReditPlus Application System",
+      "The application has been submitted and requires legal forms."
+    ],
+    "postconditions": [
+      "User remains on the 'My Applications' page."
+    ]
+  },
+  "users": [
+    {
+      "userType": "FacilityUser",
+      "username": "facilityuser01",
+      "password": "Test@1234",
+      "role": "Facility User",
+      "status": "active"
+    },
+    {
+      "userType": "FacilityUser",
+      "username": "facilityuser02",
+      "password": "Test@5678",
+      "role": "Facility User",
+      "status": "inactive"
+    }
+  ],
+  "applications": [
+    {
+      "applicationId": "APP-10001",
+      "status": "Submitted",
+      "requiresLegalForms": true,
+      "legalFormsRequired": ["Form A", "Form B"],
+      "submittedDate": "2024-06-01T10:00:00Z",
+      "facilityName": "Sunrise Medical Center",
+      "edgeCases": {
+        "noLegalFormsRequired": false,
+        "multipleLegalFormsRequired": true,
+        "singleLegalFormRequired": false
+      }
+    },
+    {
+      "applicationId": "APP-10002",
+      "status": "Submitted",
+      "requiresLegalForms": false,
+      "legalFormsRequired": [],
+      "submittedDate": "2024-06-02T12:00:00Z",
+      "facilityName": "Edge Case Clinic",
+      "edgeCases": {
+        "noLegalFormsRequired": true,
+        "multipleLegalFormsRequired": false,
+        "singleLegalFormRequired": false
+      }
+    },
+    {
+      "applicationId": "APP-10003",
+      "status": "Submitted",
+      "requiresLegalForms": true,
+      "legalFormsRequired": ["Form C"],
+      "submittedDate": "2024-06-03T14:00:00Z",
+      "facilityName": "Boundary Health",
+      "edgeCases": {
+        "noLegalFormsRequired": false,
+        "multipleLegalFormsRequired": false,
+        "singleLegalFormRequired": true
+      }
+    },
+    {
+      "applicationId": "APP-10004",
+      "status": "Draft",
+      "requiresLegalForms": true,
+      "legalFormsRequired": ["Form D"],
+      "submittedDate": null,
+      "facilityName": "Draft Only Facility",
+      "edgeCases": {
+        "noLegalFormsRequired": false,
+        "multipleLegalFormsRequired": false,
+        "singleLegalFormRequired": true
+      }
+    }
+  ],
+  "locators": {
+    "myApplicationsPage": "#my-applications-page",
+    "applicationRow": ".application-row[data-app-id='${applicationId}']",
+    "printLegalFormsLink": ".print-legal-forms-link",
+    "loginUsernameInput": "#username",
+    "loginPasswordInput": "#password"
+  },
+  "expectedResults": [
+    {
+      "applicationId": "APP-10001",
+      "printLegalFormsLinkVisible": true,
+      "comment": "Submitted application with multiple legal forms required. Link should be visible."
+    },
+    {
+      "applicationId": "APP-10002",
+      "printLegalFormsLinkVisible": false,
+      "comment": "Submitted application with no legal forms required. Link should NOT be visible."
+    },
+    {
+      "applicationId": "APP-10003",
+      "printLegalFormsLinkVisible": true,
+      "comment": "Submitted application with a single legal form required. Link should be visible."
+    },
+    {
+      "applicationId": "APP-10004",
+      "printLegalFormsLinkVisible": false,
+      "comment": "Draft application, not submitted. Link should NOT be visible."
+    }
+  ],
+  "edgeCases": [
+    {
+      "description": "Application submitted but no legal forms required",
+      "applicationId": "APP-10002",
+      "expected": "Link should NOT be visible"
+    },
+    {
+      "description": "Application submitted with only one legal form required",
+      "applicationId": "APP-10003",
+      "expected": "Link should be visible"
+    },
+    {
+      "description": "Application not submitted (Draft status)",
+      "applicationId": "APP-10004",
+      "expected": "Link should NOT be visible"
+    }
+  ]
+}
