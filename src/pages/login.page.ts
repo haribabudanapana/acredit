@@ -8,8 +8,8 @@ export class LoginPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.usernameField = page.locator('//input[contains(@name,"Username")]');
-    this.loginButton = page.locator('//button[contains(text(),"Login")]');
+    this.usernameField = page.getByRole('textbox', { name: 'Username' });
+    this.loginButton = page.getByRole('button', { name: 'Login' });
   }
 
  // ...existing code...
@@ -23,7 +23,7 @@ export class LoginPage extends BasePage {
   }
 // ...existing code...
   async goto(url: string): Promise<void> {
-
+    
     await this.page.goto(url, { waitUntil: 'commit' }); // fast, minimal wait
 
   }
