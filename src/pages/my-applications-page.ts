@@ -60,4 +60,14 @@ export class MyApplicationsPage extends BasePage {
     return page1;
   }
 
+  async validateApplicationExists(appNumber: string, facilityName: string) {
+    const grid = this.page.locator('#gridList_AccrAppList');
+    await expect(grid).toContainText(appNumber);
+    await expect(grid).toContainText(facilityName);
+  }
+
+  async signOut(page: Page) {
+      await page.getByRole('link', { name: 'Sign Out' }).click();
+  }
+
 }

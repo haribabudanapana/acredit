@@ -22,8 +22,9 @@ export class LoginPage extends BasePage {
     await this.page.waitForLoadState('domcontentloaded');
   }
 // ...existing code...
+
   async goto(url: string): Promise<void> {
-    
+
     await this.page.goto(url, { waitUntil: 'commit' }); // fast, minimal wait
 
   }
