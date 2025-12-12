@@ -47,6 +47,6 @@ test('test', async ({ page }) => {
   await summaryPage.verifyFacilityText(page1);
   await summaryPage.verifyUserText(page1);
   await summaryPage.verifyEmailText(page1);
-  await summaryPage.signOut(page1);
+  await myApplicationsPage.signOut(page1);
 
 });
