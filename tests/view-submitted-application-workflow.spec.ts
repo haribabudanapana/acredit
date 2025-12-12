@@ -31,5 +31,6 @@ test('test', async ({ page }) => {
   await summaryPage.verifyUserText(page1);
   await summaryPage.verifyEmailText(page1);
   await myApplicationsPage.signOut(page1);
+  
 
 });
