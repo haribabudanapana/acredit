@@ -4,13 +4,11 @@ import { LoginPage } from '@/pages/login.page';
 import { MyApplicationsPage } from '@/pages/my-applications-page';
 import { ViewUploadFormsPage } from '@/pages/view-upload-forms-workflow';
 import { test, expect } from '@playwright/test';
-// import { LoginPage } from '../pages/login.page';
-// import { MyApplicationsPage } from '../pages/myApplications.page';
-// import { ViewUploadFormsPage } from '../pages/viewUploadForms.page';
-// import { AdminApplicationReviewPage } from '../pages/adminReview.page';
 
 test('End-to-End: Facility Upload + Admin Accept + Facility Verification', async ({ page }) => {
-    let url = ENV.BASE_URL;
+    let url = ENV.baseUrl;
+    let facility_username = ENV.auth.facility_username;
+    let admin_username = ENV.auth.admin_username;
     
     const login = new LoginPage(page);
     const applications = new MyApplicationsPage(page);
@@ -19,7 +17,7 @@ test('End-to-End: Facility Upload + Admin Accept + Facility Verification', async
 
     // // Step 1: Facility User Login
     await login.goto(url);
-    await login.login('acreditplusfacilityuser@yahoo.com');
+    await login.login(facility_username);
 
     // Step 2: Navigate to My Applications → Sort → View/Upload Forms
     await applications.clickonMyApplicationsLink();
@@ -29,6 +27,7 @@ test('End-to-End: Facility Upload + Admin Accept + Facility Verification', async
     // Step 3: Upload File + Send to ACR
     const applicationID = await viewUpload.getFacilityID();
     await viewUpload.uploadSurveyFile('C:\\Users\\Chandanasree\\ACRedit\\acredit\\tests\\Decals_03_27_2025.pdf');
+    
     await viewUpload.sendToACR();
     await viewUpload.verifyFilesNotReviewedMessage();
 
@@ -36,11 +35,8 @@ test('End-to-End: Facility Upload + Admin Accept + Facility Verification', async
     await applications.signOut(page);
 
     // Step 5: Admin Login
-    await login.login('acreditplusadmnstr@yahoo.com');
+    await login.login(admin_username);
 
     // // Step 6: Admin Search Application & Confirm
     await adminReview.performAdminReview('2', applicationID);
-    
-
-    
 });

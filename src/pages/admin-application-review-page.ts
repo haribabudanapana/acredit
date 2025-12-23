@@ -16,20 +16,46 @@ export class AdminApplicationReviewPage {
     }
 
     async enterModalityNumber(modalityNumber: string) {
-        await this.page.getByRole('textbox', { name: 'Modality#' }).fill(modalityNumber);
+        //await this.page.getByRole('textbox', { name: 'Modality#' }).fill(modalityNumber);
+        const modalityInput = this.page.getByRole('textbox', { name: 'Modality#' });
+
+        // Fill the textbox
+        await modalityInput.fill(modalityNumber);
+
+        // Explicitly wait until the textbox's value matches the expected input
+        await expect(modalityInput).toHaveValue(modalityNumber, { timeout: 5000 });
     }
 
     async searchApplications() {
         await this.page.getByRole('button', { name: 'Search', exact: true }).click();
     }
 
+    // async openViewItemsPopup(){
+    //     const popupPromise = this.page.waitForEvent('popup');
+    //     await this.page.waitForLoadState('networkidle');
+    //     await this.page.getByRole('link', { name: 'View Items' }).waitFor({ state: 'visible', timeout: 10000 });
+    //     await this.page.getByRole('link', { name: 'View Items' }).click();
+    //     return await popupPromise;
+    // }
     async openViewItemsPopup() {
-        const popupPromise = this.page.waitForEvent('popup');
-        await this.page.waitForLoadState('networkidle');
-        await this.page.getByRole('link', { name: 'View Items' }).waitFor({ state: 'visible', timeout: 10000 });
-        await this.page.getByRole('link', { name: 'View Items' }).click();
-        return await popupPromise;
+        await this.page.waitForLoadState('networkidle'); // optional but improves stability
+
+        // 2. Wait until "View Items" link is visible
+        const viewItemsLink = this.page.getByRole('link', { name: 'View Items' });
+        await viewItemsLink.waitFor({ state: 'visible', timeout: 15000 });
+
+        // 3. Handle popup using Promise.all
+        const [popup] = await Promise.all([
+            this.page.waitForEvent('popup'),
+            viewItemsLink.click()
+        ]);
+
+        // 4. Ensure popup page finishes loading
+        await popup.waitForLoadState('domcontentloaded');
+
+        return popup;
     }
+
 
     async markDocumentCompleted(documentPage: Page) {
         // document completion drop-down

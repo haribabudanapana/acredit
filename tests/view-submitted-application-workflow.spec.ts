@@ -11,8 +11,8 @@ test('test', async ({ page }) => {
   let myApplicationsPage: MyApplicationsPage;
   let printLegalFormsPage: PrintLegalFormsPage;
   let summaryPage: ViewSubmittedApplicationSummaryPage;
-  let url = ENV.BASE_URL;
-  let username = ENV.USERNAME;
+  let url = ENV.baseUrl;
+  let facility_username = ENV.auth.facility_username;
   loginPage = new LoginPage(page);
   myApplicationsPage = new MyApplicationsPage(page);
   printLegalFormsPage = new PrintLegalFormsPage(page);
@@ -20,7 +20,7 @@ test('test', async ({ page }) => {
 
   //Launch the Application and login
   await loginPage.goto(url);
-  await loginPage.login(username);
+  await loginPage.login(facility_username);
   //Click on MyApplications link and sort Created On in Ascending order
   await myApplicationsPage.clickonMyApplicationsLink();
   await myApplicationsPage.sortCreatedOnAscending();

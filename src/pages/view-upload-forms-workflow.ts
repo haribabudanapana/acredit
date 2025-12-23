@@ -10,11 +10,17 @@ export class ViewUploadFormsPage {
     async openViewUploadForms() {
         await this.page.getByRole('link', { name: 'View/Upload FormsAction' }).click();
     }
-    async getFacilityID(){
-        const element = await this.page.locator('xpath=//*[@id="AppViewUploadFormContent"]/div[4]/table/tbody/tr[2]/td[2]/span');
 
-        //const applicationId = await this.page.locator('td[style="width: 200px;"] span').innerText();
-        return element.innerText();
+    async getFacilityID(): Promise<string> {
+    // Target only the element that contains the CTAP# text
+        const locator = this.page.locator('td[rowspan="2"] span', { hasText: 'CTAP#' });
+
+        await locator.first().waitFor({ state: 'visible' });
+
+        const fullText = await locator.first().innerText();   // e.g., "CTAP# 60551"
+        const facilityId = fullText.match(/\d+/)?.[0] ?? '';
+
+        return facilityId; // returns "60551"
     }
 
     async uploadSurveyFile(filePath: string){
@@ -30,19 +36,12 @@ export class ViewUploadFormsPage {
             console.error('Error during file upload:', error);
         }
     }
-    // async uploadSurveyAgreement(filePath: string) {
-    //     await this.page.click('input[acr="btn"][value="Upload new file for Survey Agreement"]');
-    //     const fileChooser = await this.page.waitForEvent('filechooser');
-    //     await fileChooser.setFiles(filePath);
-    // }
+    
     async sendToACR() {
         await this.page.getByRole('button', { name: 'Send to ACR' }).click();
         await this.page.getByRole('button', { name: 'Confirm' }).click();
         await expect(this.page.locator('#AppViewUploadFormContent')).toContainText('Submitted');
     }
-   
-
-
 
     async verifyFilesNotReviewedMessage() {
         await this.page.getByText('The files related to this').click();
@@ -50,7 +49,4 @@ export class ViewUploadFormsPage {
             .toContainText('The files related to this document have not been reviewed by ACR yet.');
     }
 
-    // async signOut() {
-    //     await this.page.getByRole('link', { name: 'Sign Out' }).click();
-    // }
 }
