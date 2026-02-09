@@ -70,4 +70,57 @@ export class MyApplicationsPage extends BasePage {
       await page.getByRole('link', { name: 'Sign Out' }).click();
   }
 
+  /**
+   * Complete workflow to verify 'Print Legal Forms for Submission' link visibility for a submitted application.
+   * This method covers navigation, identification, and validation steps as a single business flow.
+   * @param applicationIdentifier - Unique identifier (e.g., application number or facility name) for the submitted application
+   */
+  async verifyPrintLegalFormsLinkVisibilityForSubmittedApplication(applicationIdentifier: string): Promise<void> {
+    // Wait for the My Applications page to load
+    await this.waitForLoad();
+
+    // Find the application row by applicationIdentifier (could be app number or facility name)
+    // Placeholder: Adjust selector as per actual DOM structure
+    const applicationRow = this.page.locator(`#gridList_AccrAppList tr:has-text("${applicationIdentifier}")`);
+    await applicationRow.waitFor({ state: 'visible', timeout: 10000 });
+
+    // Within the application row, locate the 'Print Legal Forms for Submission' link
+    // Placeholder: Adjust selector as per actual DOM structure
+    const printLegalFormsLink = applicationRow.locator('a:has-text("Print legal forms for Submission")');
+    await printLegalFormsLink.waitFor({ state: 'visible', timeout: 10000 });
+
+    // Assert that the link is visible
+    await expect(printLegalFormsLink).toBeVisible();
+  }
+
+  /**
+   * Navigates to 'My Applications' page and validates user remains on the page after performing actions.
+   * This method can be used as a post-condition assertion.
+   */
+  async assertUserRemainsOnMyApplicationsPage(): Promise<void> {
+    // Wait for the unique heading or element that identifies the My Applications page
+    await this.expectOnMyApplicationsPage();
+  }
+
+  /**
+   * (Optional) Clicks the 'Print Legal Forms for Submission' link for a specific submitted application and returns the popup page.
+   * @param applicationIdentifier - Unique identifier (e.g., application number or facility name) for the submitted application
+   * @returns {Promise<Page>} - The popup Page object
+   */
+  async openPrintLegalFormsPopupForSubmittedApplication(applicationIdentifier: string): Promise<Page> {
+    // Wait for the application row
+    const applicationRow = this.page.locator(`#gridList_AccrAppList tr:has-text("${applicationIdentifier}")`);
+    await applicationRow.waitFor({ state: 'visible', timeout: 10000 });
+
+    // Find the link
+    const printLegalFormsLink = applicationRow.locator('a:has-text("Print legal forms for Submission")');
+    await expect(printLegalFormsLink).toBeVisible();
+
+    // Click and handle popup
+    const popupPromise = this.page.waitForEvent('popup');
+    await printLegalFormsLink.click();
+    const popupPage = await popupPromise;
+    return popupPage;
+  }
+
 }

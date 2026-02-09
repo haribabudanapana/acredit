@@ -1,133 +1,158 @@
-
-{
-  "meta": {
+// Test data for: Verify 'Print Legal Forms for Submission' link visibility for submitted applications
+// Test Case ID: TCD_FT_01_FR-1
+// Purpose: Ensure the 'Print Legal Forms for Submission' link is visible when the application is submitted and requires specific documents.
+[
+  {
     "testCaseId": "TCD_FT_01_FR-1",
-    "testCaseName": "Verify 'Print Legal Forms for Submission' link visibility for submitted applications",
-    "priority": "High",
-    "type": "Functional",
-    "objective": "Ensure the 'Print Legal Forms for Submission' link is visible when the application is submitted and requires specific documents.",
-    "preconditions": [
-      "Facility User is logged into the ACReditPlus Application System",
-      "The application has been submitted and requires legal forms."
-    ],
-    "postconditions": [
-      "User remains on the 'My Applications' page."
-    ]
-  },
-  "users": [
-    {
-      "userType": "FacilityUser",
-      "username": "facilityuser01",
-      "password": "Test@1234",
-      "role": "Facility User",
-      "status": "active"
+    "description": "Standard submitted application requiring legal forms.",
+    "facilityUser": {
+      "username": "facility_user_01",
+      "password": "SecurePass!2024"
     },
-    {
-      "userType": "FacilityUser",
-      "username": "facilityuser02",
-      "password": "Test@5678",
-      "role": "Facility User",
-      "status": "inactive"
-    }
-  ],
-  "applications": [
-    {
+    "application": {
       "applicationId": "APP-10001",
       "status": "Submitted",
       "requiresLegalForms": true,
-      "legalFormsRequired": ["Form A", "Form B"],
-      "submittedDate": "2024-06-01T10:00:00Z",
       "facilityName": "Sunrise Medical Center",
-      "edgeCases": {
-        "noLegalFormsRequired": false,
-        "multipleLegalFormsRequired": true,
-        "singleLegalFormRequired": false
-      }
+      "submissionDate": "2024-06-01T10:30:00Z",
+      "documentsRequired": [
+        "Certificate_PETAP_00566_02.pdf",
+        "Decals_03_27_2025.pdf"
+      ]
     },
-    {
+    "expectedResult": {
+      "printLegalFormsLinkVisible": true
+    }
+  },
+  {
+    "testCaseId": "TCD_FT_01_FR-1",
+    "description": "Application submitted but does NOT require legal forms (negative case).",
+    "facilityUser": {
+      "username": "facility_user_02",
+      "password": "SecurePass!2024"
+    },
+    "application": {
       "applicationId": "APP-10002",
       "status": "Submitted",
       "requiresLegalForms": false,
-      "legalFormsRequired": [],
-      "submittedDate": "2024-06-02T12:00:00Z",
-      "facilityName": "Edge Case Clinic",
-      "edgeCases": {
-        "noLegalFormsRequired": true,
-        "multipleLegalFormsRequired": false,
-        "singleLegalFormRequired": false
-      }
+      "facilityName": "Riverside Imaging",
+      "submissionDate": "2024-06-02T11:00:00Z",
+      "documentsRequired": [
+        "Certificate_UAP_53188.pdf"
+      ]
     },
-    {
+    "expectedResult": {
+      "printLegalFormsLinkVisible": false
+    }
+  },
+  {
+    "testCaseId": "TCD_FT_01_FR-1",
+    "description": "Edge case: Application just submitted, legal forms required.",
+    "facilityUser": {
+      "username": "facility_user_03",
+      "password": "SecurePass!2024"
+    },
+    "application": {
       "applicationId": "APP-10003",
       "status": "Submitted",
       "requiresLegalForms": true,
-      "legalFormsRequired": ["Form C"],
-      "submittedDate": "2024-06-03T14:00:00Z",
-      "facilityName": "Boundary Health",
-      "edgeCases": {
-        "noLegalFormsRequired": false,
-        "multipleLegalFormsRequired": false,
-        "singleLegalFormRequired": true
-      }
+      "facilityName": "Edge Case Clinic",
+      "submissionDate": "2024-06-10T23:59:59Z",
+      "documentsRequired": []
     },
-    {
-      "applicationId": "APP-10004",
-      "status": "Draft",
-      "requiresLegalForms": true,
-      "legalFormsRequired": ["Form D"],
-      "submittedDate": null,
-      "facilityName": "Draft Only Facility",
-      "edgeCases": {
-        "noLegalFormsRequired": false,
-        "multipleLegalFormsRequired": false,
-        "singleLegalFormRequired": true
-      }
+    "expectedResult": {
+      "printLegalFormsLinkVisible": true
     }
-  ],
-  "locators": {
-    "myApplicationsPage": "#my-applications-page",
-    "applicationRow": ".application-row[data-app-id='${applicationId}']",
-    "printLegalFormsLink": ".print-legal-forms-link",
-    "loginUsernameInput": "#username",
-    "loginPasswordInput": "#password"
   },
-  "expectedResults": [
-    {
-      "applicationId": "APP-10001",
-      "printLegalFormsLinkVisible": true,
-      "comment": "Submitted application with multiple legal forms required. Link should be visible."
+  {
+    "testCaseId": "TCD_FT_01_FR-1",
+    "description": "Boundary: Application with maximum allowed documents requiring legal forms.",
+    "facilityUser": {
+      "username": "facility_user_04",
+      "password": "SecurePass!2024"
     },
-    {
-      "applicationId": "APP-10002",
-      "printLegalFormsLinkVisible": false,
-      "comment": "Submitted application with no legal forms required. Link should NOT be visible."
-    },
-    {
-      "applicationId": "APP-10003",
-      "printLegalFormsLinkVisible": true,
-      "comment": "Submitted application with a single legal form required. Link should be visible."
-    },
-    {
+    "application": {
       "applicationId": "APP-10004",
-      "printLegalFormsLinkVisible": false,
-      "comment": "Draft application, not submitted. Link should NOT be visible."
-    }
-  ],
-  "edgeCases": [
-    {
-      "description": "Application submitted but no legal forms required",
-      "applicationId": "APP-10002",
-      "expected": "Link should NOT be visible"
+      "status": "Submitted",
+      "requiresLegalForms": true,
+      "facilityName": "Boundary Test Hospital",
+      "submissionDate": "2024-06-05T09:00:00Z",
+      "documentsRequired": [
+        "Certificate_PETAP_00566_02.pdf",
+        "Certificate_UAP_53188.pdf",
+        "Decals_03_27_2025.pdf",
+        "Extra_Document_1.pdf",
+        "Extra_Document_2.pdf",
+        "Extra_Document_3.pdf",
+        "Extra_Document_4.pdf",
+        "Extra_Document_5.pdf",
+        "Extra_Document_6.pdf",
+        "Extra_Document_7.pdf"
+      ]
     },
-    {
-      "description": "Application submitted with only one legal form required",
-      "applicationId": "APP-10003",
-      "expected": "Link should be visible"
-    },
-    {
-      "description": "Application not submitted (Draft status)",
-      "applicationId": "APP-10004",
-      "expected": "Link should NOT be visible"
+    "expectedResult": {
+      "printLegalFormsLinkVisible": true
     }
-  ]
-}
+  },
+  {
+    "testCaseId": "TCD_FT_01_FR-1",
+    "description": "Edge case: Application in 'In Progress' status should NOT show the link.",
+    "facilityUser": {
+      "username": "facility_user_05",
+      "password": "SecurePass!2024"
+    },
+    "application": {
+      "applicationId": "APP-10005",
+      "status": "In Progress",
+      "requiresLegalForms": true,
+      "facilityName": "In Progress Imaging",
+      "submissionDate": null,
+      "documentsRequired": [
+        "Certificate_PETAP_00566_02.pdf"
+      ]
+    },
+    "expectedResult": {
+      "printLegalFormsLinkVisible": false
+    }
+  },
+  {
+    "testCaseId": "TCD_FT_01_FR-1",
+    "description": "Edge case: Application submitted, no documents required, legal forms required.",
+    "facilityUser": {
+      "username": "facility_user_06",
+      "password": "SecurePass!2024"
+    },
+    "application": {
+      "applicationId": "APP-10006",
+      "status": "Submitted",
+      "requiresLegalForms": true,
+      "facilityName": "No Docs Clinic",
+      "submissionDate": "2024-06-06T14:00:00Z",
+      "documentsRequired": []
+    },
+    "expectedResult": {
+      "printLegalFormsLinkVisible": true
+    }
+  },
+  {
+    "testCaseId": "TCD_FT_01_FR-1",
+    "description": "Edge case: Application submitted, legal forms required, user with special characters in username.",
+    "facilityUser": {
+      "username": "facility_user_special!@#",
+      "password": "SecurePass!2024"
+    },
+    "application": {
+      "applicationId": "APP-10007",
+      "status": "Submitted",
+      "requiresLegalForms": true,
+      "facilityName": "Special User Facility",
+      "submissionDate": "2024-06-07T15:30:00Z",
+      "documentsRequired": [
+        "Certificate_UAP_53188.pdf"
+      ]
+    },
+    "expectedResult": {
+      "printLegalFormsLinkVisible": true
+    }
+  }
+]
