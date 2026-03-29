@@ -1,0 +1,134 @@
+// Test data for TC_PLF_001: Display 'Print Legal Forms' link when application status is 'Approved'
+{
+  "testCaseId": "TC_PLF_001",
+  "testCaseName": "Display 'Print Legal Forms' link when application status is 'Approved'",
+  "objective": "Verify that the 'Print Legal Forms' link is visible when the application status is 'Approved'.",
+  "priority": "Medium",
+  "type": "Functional",
+  "applicant": {
+    "username": "approved_user_01",
+    "password": "SecurePass!2024",
+    "userId": "A1001",
+    "role": "Applicant",
+    "email": "approved.user01@example.com",
+    "accountStatus": "Active"
+  },
+  "application": {
+    "applicationId": "APP-00012345",
+    "status": "Approved",
+    "submittedDate": "2024-06-01T09:00:00Z",
+    "approvalDate": "2024-06-10T14:30:00Z",
+    "lastModified": "2024-06-10T14:35:00Z",
+    "type": "Standard Legal Form",
+    "formVersion": "v2.1",
+    "applicantId": "A1001"
+  },
+  "locators": {
+    "printLegalFormsLink": {
+      "css": "a#print-legal-forms",
+      "xpath": "//a[contains(text(),'Print Legal Forms')]"
+    },
+    "applicationStatusLabel": {
+      "css": "span.status-label",
+      "xpath": "//span[@class='status-label']"
+    },
+    "userMenu": {
+      "css": "#user-menu",
+      "xpath": "//div[@id='user-menu']"
+    },
+    "logoutButton": {
+      "css": "button.logout-btn",
+      "xpath": "//button[text()='Logout']"
+    },
+    "applicationRow": {
+      "css": "tr[data-app-id='APP-00012345']",
+      "xpath": "//tr[@data-app-id='APP-00012345']"
+    }
+  },
+  "testDataItems": [
+    {
+      "field": "username",
+      "value": "approved_user_01",
+      "description": "Valid applicant username with approved application"
+    },
+    {
+      "field": "password",
+      "value": "SecurePass!2024",
+      "description": "Valid password for the applicant"
+    },
+    {
+      "field": "applicationId",
+      "value": "APP-00012345",
+      "description": "Unique identifier for the approved application"
+    },
+    {
+      "field": "applicationStatus",
+      "value": "Approved",
+      "description": "Application status required to display the link"
+    },
+    {
+      "field": "formVersion",
+      "value": "v2.1",
+      "description": "Version of the legal form to print"
+    },
+    {
+      "field": "userRole",
+      "value": "Applicant",
+      "description": "Role of the user performing the test"
+    },
+    {
+      "field": "accountStatus",
+      "value": "Active",
+      "description": "Applicant account must be active"
+    },
+    {
+      "field": "submittedDate",
+      "value": "2024-06-01T09:00:00Z",
+      "description": "Date the application was submitted"
+    },
+    {
+      "field": "approvalDate",
+      "value": "2024-06-10T14:30:00Z",
+      "description": "Date the application was approved"
+    },
+    {
+      "field": "lastModified",
+      "value": "2024-06-10T14:35:00Z",
+      "description": "Last modified timestamp of the application"
+    },
+    {
+      "field": "email",
+      "value": "approved.user01@example.com",
+      "description": "Applicant's email address"
+    },
+    {
+      "field": "edgeCase_applicationStatus",
+      "value": "approved",
+      "description": "Boundary value: status in lowercase (should still show the link if system is case-insensitive)"
+    },
+    {
+      "field": "edgeCase_applicationStatus",
+      "value": "APPROVED",
+      "description": "Boundary value: status in uppercase (should still show the link if system is case-insensitive)"
+    },
+    {
+      "field": "edgeCase_applicationStatus",
+      "value": "Approved ",
+      "description": "Boundary value: status with trailing space (should trim and show the link)"
+    }
+  ],
+  "edgeCases": [
+    {
+      "scenario": "Application status is 'approved' (lowercase)",
+      "expected": "Link should be visible if status check is case-insensitive"
+    },
+    {
+      "scenario": "Application status is 'APPROVED' (uppercase)",
+      "expected": "Link should be visible if status check is case-insensitive"
+    },
+    {
+      "scenario": "Application status is 'Approved ' (trailing space)",
+      "expected": "Link should be visible if system trims spaces"
+    }
+  ]
+}
